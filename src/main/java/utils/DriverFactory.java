@@ -2,52 +2,70 @@ package utils;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-
+import org.openqa.selenium.firefox.FirefoxOptions;
 import io.github.bonigarcia.wdm.WebDriverManager;
-
 
 public class DriverFactory {
 
-	// Private constructor to prevent instantiation
-	private DriverFactory() {}
+    private DriverFactory() {}
 
-	private static ThreadLocal<WebDriver> driverPool = new ThreadLocal<>();
+    private static ThreadLocal<WebDriver> driverPool = new ThreadLocal<>();
 
-	public static WebDriver getDriver() {
-		// FIX: Check the thread-local's contained value, not the ThreadLocal object itself.
-		if (driverPool.get() == null) {
-			// Read browser type from config.properties
-			String browser = ConfigReader.getProperty("browser").toLowerCase();
-			System.out.println("Browser type being read: " + browser);
-			
-			
-			// Factory Pattern: Switch between browsers
-			switch (browser) {
-			case "chrome":
-				WebDriverManager.chromedriver().setup();
-				driverPool.set(new ChromeDriver());
-				break;
-			case "firefox":
-				WebDriverManager.firefoxdriver().setup();
-				driverPool.set(new FirefoxDriver());
-				break;
-			case "edge":
-				WebDriverManager.edgedriver().setup();
-				driverPool.set(new EdgeDriver());
-				break;
-			default:
-				throw new RuntimeException("Browser not supported: " + browser);
-			}
-		}
-		return driverPool.get();
-	}
+    public static WebDriver getDriver() {
+        if (driverPool.get() == null) {
+            String browser = ConfigReader.getProperty("browser").toLowerCase();
+            
+            // Detect if running in GitHub Actions or other CI
+            boolean isCI = System.getenv("GITHUB_ACTIONS") != null;
+            System.out.println("Browser: " + browser + " | Is CI Environment: " + isCI);
+            
+            switch (browser) {
+                case "chrome":
+                    WebDriverManager.chromedriver().setup();
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    if (isCI) {
+                        chromeOptions.addArguments("--headless=new");
+                        chromeOptions.addArguments("--disable-gpu");
+                        chromeOptions.addArguments("--no-sandbox");
+                        chromeOptions.addArguments("--disable-dev-shm-usage");
+                        chromeOptions.addArguments("--window-size=1920,1080");
+                    }
+                    driverPool.set(new ChromeDriver(chromeOptions));
+                    break;
+                    
+                case "firefox":
+                    WebDriverManager.firefoxdriver().setup();
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    if (isCI) {
+                        firefoxOptions.addArguments("-headless");
+                    }
+                    driverPool.set(new FirefoxDriver(firefoxOptions));
+                    break;
+                    
+                case "edge":
+                    WebDriverManager.edgedriver().setup();
+                    EdgeOptions edgeOptions = new EdgeOptions();
+                    if (isCI) {
+                        edgeOptions.addArguments("--headless=new");
+                    }
+                    driverPool.set(new EdgeDriver(edgeOptions));
+                    break;
+                    
+                default:
+                    throw new RuntimeException("Browser not supported: " + browser);
+            }
+        }
+        return driverPool.get();
+    }
 
-	public static void closeDriver() {
-		if (driverPool.get() != null) {
-			driverPool.get().quit();
-			driverPool.remove();
-		}
-	}
+    public static void closeDriver() {
+        if (driverPool.get() != null) {
+            driverPool.get().quit();
+            driverPool.remove();
+        }
+    }
 }
