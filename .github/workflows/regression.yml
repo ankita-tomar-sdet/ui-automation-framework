@@ -11,7 +11,6 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    # Perfectly aligned with runs-on
     environment: QA
 
     steps:
@@ -27,7 +26,6 @@ jobs:
 
       - name: Run Tests with Maven
         env:
-          # These will now be pulled from the 'QA' environment secrets
           valid_user: ${{ vars.VALID_USER }}
           valid_password: ${{ vars.VALID_PASSWORD }}
         run: mvn clean test
@@ -37,8 +35,9 @@ jobs:
         run: mvn allure:report
 
       - name: Upload Allure Results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
-          path: target/allure-results
+          path: "**/target/allure-results"
           retention-days: 5
