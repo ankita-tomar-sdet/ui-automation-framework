@@ -26,7 +26,9 @@ public class Login {
 
 	@When("the user enters a valid username and password and Clicks on Submit")
 	public void the_user_enters_a_valid_username_and_password() {
-	    loginPage.login(ConfigReader.getProperty("VALID_USER"), ConfigReader.getProperty("VALID_PASSWORD"));
+		String username = ConfigReader.getProperty("VALID_USER");
+		String password = ConfigReader.getProperty("VALID_PASSWORD");
+	    loginPage.login(username, password);
 	}
 
 

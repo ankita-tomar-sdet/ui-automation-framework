@@ -44,7 +44,7 @@ public class ConfigReader {
 	
 	public static String getProperty(String key) {
 		// 1. Check if the property exists as a System Environment Variable (GitHub Actions)
-	    String value = System.getenv(key);
+	    String value = System.getenv(key.toUpperCase());
 	    
 	    // 2. If it's not in the environment, read from the local properties file
 	    if (value == null) {
