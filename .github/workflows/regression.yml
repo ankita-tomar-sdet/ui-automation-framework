@@ -28,8 +28,8 @@ jobs:
       - name: Run Tests with Maven
         env:
           # These will now be pulled from the 'QA' environment secrets
-          valid_user: ${{ secrets.VALID_USER }}
-          valid_password: ${{ secrets.VALID_PASSWORD }}
+          valid_user: ${{ vars.VALID_USER }}
+          valid_password: ${{ vars.VALID_PASSWORD }}
         run: mvn clean test
         continue-on-error: true
 
