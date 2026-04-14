@@ -26,6 +26,10 @@ jobs:
       - name: Run Tests with Maven
         # We use -DskipTests=false to ensure it runs
         run: mvn clean test
+		env:
+		          # The left side MUST match what ConfigReader.getProperty("key") looks for
+		          valid_user: ${{ secrets.VALID_USER }}
+		          valid_password: ${{ secrets.VALID_PASSWORD }}
         continue-on-error: true
 
       - name: Generate Allure Report

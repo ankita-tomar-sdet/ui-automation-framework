@@ -98,7 +98,7 @@ public class BrowserWaits {
 		Fluent Wait is a "Self-Healing" mechanism because it doesn't just wait for time; 
 		it actively ignores specific exceptions (like NoSuchElementException or StaleElementReferenceException) while polling the DOM at a high frequency.
 	 */
-	public static WebElement waitForElementSmartly(WebDriver driver, WebElement loginBtn) {
+	public static WebElement waitForElementSmartly(WebDriver driver, WebElement element) {
         // Configure the Fluent Wait
         Wait<WebDriver> wait = new FluentWait<>(driver)
                 .withTimeout(Duration.ofSeconds(30))          // Total wait time
@@ -108,14 +108,6 @@ public class BrowserWaits {
                 .withMessage("Timed out: Element not found or stable after 30 seconds");
 
         // The "Healing" logic: Keep trying until the element is actually interactable
-        return wait.until(new Function<WebDriver, WebElement>() {
-            public WebElement apply(WebDriver driver) {
-                WebElement element = driver.findElement((By) loginBtn);
-                if (element.isDisplayed() && element.isEnabled()) {
-                    return element;
-                }
-                return null;
-            }
-        });
+        return wait.until(ExpectedConditions.visibilityOf(element));
     }
 }

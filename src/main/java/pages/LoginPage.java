@@ -87,6 +87,10 @@ public class LoginPage extends BasePage {
 	@Step("Logging in with valid username and password")
 	public void login(String username, String password) {
 		verifyOnLoginPage();
+		if (username == null || password == null) {
+	        throw new RuntimeException("ERROR: Credentials are NULL. " +
+	                "Check GitHub Secrets or config.properties. User: " + username + ", Password: " + (password != null ? " [PROVIDED]" : " [NULL]"));
+	    }
 		existingUserEmail.sendKeys(username);
 		existingUserPassword.sendKeys(password);
 		BrowserWaits.waitForElementSmartly(DriverFactory.getDriver(), loginBtn).click();
