@@ -7,6 +7,8 @@ on:
     branches: [ main ]
   schedule:
     - cron: '0 0 * * *'
+  # Correctly aligned under 'on'
+  workflow_dispatch:
 
 jobs:
   build-and-test:
