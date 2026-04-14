@@ -11,7 +11,8 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-	environment: QA
+    # Perfectly aligned with runs-on
+    environment: QA
 
     steps:
       - name: Checkout Code
@@ -26,7 +27,7 @@ jobs:
 
       - name: Run Tests with Maven
         env:
-          # These must match your ConfigReader keys
+          # These will now be pulled from the 'QA' environment secrets
           valid_user: ${{ secrets.VALID_USER }}
           valid_password: ${{ secrets.VALID_PASSWORD }}
         run: mvn clean test
