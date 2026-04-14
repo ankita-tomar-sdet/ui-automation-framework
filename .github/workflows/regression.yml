@@ -24,11 +24,11 @@ jobs:
           cache: maven
 
       - name: Run Tests with Maven
+        env:
+          # These must match your ConfigReader keys
+          valid_user: ${{ secrets.VALID_USER }}
+          valid_password: ${{ secrets.VALID_PASSWORD }}
         run: mvn clean test
-		env:
-		# The left side MUST match what ConfigReader.getProperty("key") looks for
-		   valid_user: ${{ secrets.VALID_USER }}
-		   valid_password: ${{ secrets.VALID_PASSWORD }}
         continue-on-error: true
 
       - name: Generate Allure Report
