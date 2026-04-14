@@ -1,0 +1,22 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Allure
+allure-results/
+allure-report/
+
+# IDE - Eclipse/IntelliJ
+.settings/
+.project
+.classpath
+.metadata/
+*.iml
+.idea/
+
+# OS
+.DS_Store
