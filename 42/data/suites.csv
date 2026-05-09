@@ -1,0 +1,5 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"  As a user, I want to be able to log in to the application
+  so that I can access my personalized dashboard.","1940","Login with invalid credentials","","Sat May 09 02:57:36 UTC 2026","passed","Sat May 09 02:57:38 UTC 2026","","User Login Functionality","Login with invalid credentials",""
+"  As a user, I want to be able to log in to the application
+  so that I can access my personalized dashboard.","12263","Login with valid credentials","","Sat May 09 02:57:24 UTC 2026","passed","Sat May 09 02:57:36 UTC 2026","","User Login Functionality","Login with valid credentials",""
